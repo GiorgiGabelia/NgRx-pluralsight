@@ -1,19 +1,10 @@
-import {
-  createFeatureSelector,
-  createReducer,
-  createSelector,
-  on,
-  props,
-} from '@ngrx/store';
 import { Product } from '../product';
-import * as AppState from 'src/app/state/app.state';
-import * as ProductActions from 'src/app/products/state/product.actions';
+
+import { ProductApiActions, ProductPageActions } from './actions';
+import { createReducer, on } from '@ngrx/store';
 
 //Interfaces
 //Am moduleshi, global state-is interface-ad gamoviyenebt am interfaces;
-export interface State extends AppState.State {
-  products: ProductState;
-}
 
 export interface ProductState {
   showProductCode: boolean;
@@ -30,51 +21,28 @@ const initialState: ProductState = {
   error: '',
 };
 
-//Selectors
-const getProductFeatureState = createFeatureSelector<ProductState>('products');
-
-export const getShowProductCode = createSelector(
-  getProductFeatureState,
-  (state) => state.showProductCode //projector function; state here is the product slice of the whole state (this is because our configuration in product.module)
-);
-
-export const getCurrentProduct = createSelector(
-  getProductFeatureState,
-  (state) => state.currentProduct
-);
-
-export const getProducts = createSelector(
-  getProductFeatureState,
-  (state) => state.products
-);
-
-export const getError = createSelector(
-  getProductFeatureState,
-  (state) => state.error
-);
-
 //Reducer
 export const productReducer = createReducer<ProductState>(
   initialState,
-  on(ProductActions.toggleProductCode, (state): ProductState => {
+  on(ProductPageActions.toggleProductCode, (state): ProductState => {
     return {
       ...state,
       showProductCode: !state.showProductCode,
     };
   }),
-  on(ProductActions.setCurrentProduct, (state, action): ProductState => {
+  on(ProductPageActions.setCurrentProduct, (state, action): ProductState => {
     return {
       ...state,
       currentProduct: action.product,
     };
   }),
-  on(ProductActions.clearCurrentProduct, (state): ProductState => {
+  on(ProductPageActions.clearCurrentProduct, (state): ProductState => {
     return {
       ...state,
       currentProduct: null,
     };
   }),
-  on(ProductActions.initCurrentProduct, (state): ProductState => {
+  on(ProductPageActions.initCurrentProduct, (state): ProductState => {
     return {
       ...state,
       currentProduct: {
@@ -86,13 +54,13 @@ export const productReducer = createReducer<ProductState>(
       },
     };
   }),
-  on(ProductActions.loadProductsSuccess, (state, action): ProductState => {
+  on(ProductApiActions.loadProductsSuccess, (state, action): ProductState => {
     return {
       ...state,
       products: action.products,
     };
   }),
-  on(ProductActions.loadProductsFailure, (state, action): ProductState => {
+  on(ProductApiActions.loadProductsFailure, (state, action): ProductState => {
     return {
       ...state,
       products: [],

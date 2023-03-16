@@ -7,8 +7,8 @@ import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
 
 import { Store } from '@ngrx/store';
-import { getCurrentProduct, State } from '../state/product.reducer';
-import * as ProductActions from '../state/product.actions';
+import { getCurrentProduct, State } from '../state';
+import { ProductPageActions } from '../state/actions';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -125,13 +125,14 @@ export class ProductEditComponent implements OnInit {
     if (product && product.id) {
       if (confirm(`Really delete the product: ${product.productName}?`)) {
         this.productService.deleteProduct(product.id).subscribe({
-          next: () => this.store.dispatch(ProductActions.clearCurrentProduct()),
+          next: () =>
+            this.store.dispatch(ProductPageActions.clearCurrentProduct()),
           error: (err) => (this.errorMessage = err),
         });
       }
     } else {
       // No need to delete, it was never saved
-      this.store.dispatch(ProductActions.clearCurrentProduct());
+      this.store.dispatch(ProductPageActions.clearCurrentProduct());
     }
   }
 
@@ -147,7 +148,7 @@ export class ProductEditComponent implements OnInit {
           this.productService.createProduct(product).subscribe({
             next: (p) =>
               this.store.dispatch(
-                ProductActions.setCurrentProduct({ product: p })
+                ProductPageActions.setCurrentProduct({ product: p })
               ),
             error: (err) => (this.errorMessage = err),
           });
@@ -155,7 +156,7 @@ export class ProductEditComponent implements OnInit {
           this.productService.updateProduct(product).subscribe({
             next: (p) =>
               this.store.dispatch(
-                ProductActions.setCurrentProduct({ product: p })
+                ProductPageActions.setCurrentProduct({ product: p })
               ),
             error: (err) => (this.errorMessage = err),
           });
