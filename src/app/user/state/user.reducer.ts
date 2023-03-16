@@ -1,10 +1,4 @@
-import {
-  createAction,
-  createFeatureSelector,
-  createReducer,
-  createSelector,
-  on,
-} from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import * as AppState from 'src/app/state/app.state';
 import * as UserActions from './user.actions';
 
