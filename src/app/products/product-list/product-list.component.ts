@@ -10,7 +10,7 @@ import {
   getShowProductCode,
   State,
 } from '../state/product.reducer';
-import * as ProductAtions from 'src/app/products/state/product.actions';
+import * as ProductActions from 'src/app/products/state/product.actions';
 
 @Component({
   selector: 'pm-product-list',
@@ -54,14 +54,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   checkChanged(): void {
-    this.store.dispatch(ProductAtions.toggleProductCode());
+    this.store.dispatch(ProductActions.toggleProductCode());
   }
 
   newProduct(): void {
-    this.store.dispatch(ProductAtions.initCurrentProduct());
+    this.store.dispatch(ProductActions.initCurrentProduct());
   }
 
   productSelected(product: Product): void {
-    this.store.dispatch(ProductAtions.setCurrentProduct({ product }));
+    this.store.dispatch(ProductActions.setCurrentProduct({ product }));
   }
 }

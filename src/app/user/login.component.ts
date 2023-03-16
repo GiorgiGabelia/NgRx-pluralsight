@@ -4,11 +4,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { AuthService } from './auth.service';
-import {
-  getMarkUserName,
-  getUserFeatureState,
-  State,
-} from './state/user.reducer';
+import { State } from './state/user.reducer';
+import * as UserActions from './state/user.actions';
+import * as UserSelectors from './state/user.selectors';
 
 @Component({
   templateUrl: './login.component.html',
@@ -26,9 +24,11 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select(getMarkUserName).subscribe((maskUserName) => {
-      this.maskUserName = maskUserName;
-    });
+    this.store
+      .select(UserSelectors.getMarkUserName)
+      .subscribe((maskUserName) => {
+        this.maskUserName = maskUserName;
+      });
   }
 
   cancel(): void {
@@ -36,9 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkChanged(): void {
-    this.store.dispatch({
-      type: '[User] Mask Username',
-    });
+    this.store.dispatch(UserActions.maskUserName());
   }
 
   login(loginForm: NgForm): void {
