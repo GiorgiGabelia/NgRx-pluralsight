@@ -4,9 +4,11 @@ import {
   createReducer,
   createSelector,
   on,
+  props,
 } from '@ngrx/store';
 import { Product } from '../product';
 import * as AppState from 'src/app/state/app.state';
+import * as ProductAtions from 'src/app/products/state/product.actions';
 
 //Interfaces
 //Am moduleshi, global state-is interface-ad gamoviyenebt am interfaces;
@@ -48,10 +50,34 @@ export const getProducts = createSelector(
 //Reducer
 export const productReducer = createReducer<ProductState>(
   initialState,
-  on(createAction('[Product] Toggle Product Code'), (state): ProductState => {
+  on(ProductAtions.toggleProductCode, (state): ProductState => {
     return {
       ...state,
       showProductCode: !state.showProductCode,
+    };
+  }),
+  on(ProductAtions.setCurrentProduct, (state, action): ProductState => {
+    return {
+      ...state,
+      currentProduct: action.product,
+    };
+  }),
+  on(ProductAtions.clearCurrentProduct, (state): ProductState => {
+    return {
+      ...state,
+      currentProduct: null,
+    };
+  }),
+  on(ProductAtions.initCurrentProduct, (state): ProductState => {
+    return {
+      ...state,
+      currentProduct: {
+        id: 0,
+        productName: '',
+        productCode: 'New',
+        description: '',
+        starRating: 0,
+      },
     };
   })
 );
